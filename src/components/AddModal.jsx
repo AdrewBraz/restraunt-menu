@@ -25,17 +25,17 @@ const AddModal = () => {
     formdata.append('date', `${year}-${month}`);
     formdata.append('report', report);
     try {
-      await axios.post('/parse', formdata).then(({data}) => {
-        console.log(data)
-        dispatch(actions.addMessage(data))
-        console.log('success')
+      await axios.post('/parse', formdata).then(({ data }) => {
+        console.log(data);
+        dispatch(actions.addMessage(data));
+        console.log('success');
       });
     } catch (e) {
       const { data } = e.response;
       const status = true;
-      dispatch(actions.addError({data, status}))
+      dispatch(actions.addError({ data, status }));
     }
-    dispatch(actions.modalStateClose());
+    dispatch(actions.modalReportClose());
   };
 
   const form = useFormik({

@@ -13,7 +13,7 @@ import App from './components/App';
 import createRootReducer from './reducers';
 import Oms3 from './components/Oms3';
 import Oms2 from './components/Oms2';
-import Oms1 from './components/Oms1'
+import Oms1 from './components/Oms1';
 
 const history = createBrowserHistory();
 const middleware = [...getDefaultMiddleware(), routerMiddleware(history)];

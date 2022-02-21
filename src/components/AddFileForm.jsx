@@ -40,8 +40,6 @@ const AddFileForm = (props) => {
     validateOnChange: true,
   });
 
-  const options = listOfYears.map((year) => ({ value: `${format(year, 'yyyy')}`, label: `${format(year, 'yyyy')}` }));
-
   return (
     <>
       <form action="/" id="dates" className="form-inline mb-3" method="post" onSubmit={form.handleSubmit}>

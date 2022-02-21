@@ -1,36 +1,35 @@
 // @ts-check
 
 const addtoObject = (obj, field, item) => {
-  switch(field){
+  switch (field) {
     case 'Наименование':
-      obj['SMO_NAME'] = item.replace(/"([^"]+(?="))"/g, '$1')
+      obj.SMO_NAME = item.replace(/"([^"]+(?="))"/g, '$1');
       break;
     case 'Профиль':
-      obj['PROFILE'] = item;
+      obj.PROFILE = item;
       break;
     case 'МС':
-      obj['MDSTAND'] = item;
+      obj.MDSTAND = item;
       break;
     case 'Усл':
-      obj['USL'] = item;
+      obj.USL = item;
       break;
     case 'Сумма':
-      obj['TOTAL_PRICE'] = item.toString().replace(/\s+/g, '').replace(/[,]/g, '.')
+      obj.TOTAL_PRICE = item.toString().replace(/\s+/g, '').replace(/[,]/g, '.');
       break;
     default:
-      return;
   }
-}
+};
 
 export default async (data) => {
   const keys = data[0];
   const json = data.slice(1).reduce((acc, row) => {
-    const obj = {}
+    const obj = {};
     row.forEach((item, i) => {
-      addtoObject(obj, keys[i], item)
-    })
-    acc.push(obj)
-    return acc
-  }, [])
-  return JSON.stringify(json)
-}
+      addtoObject(obj, keys[i], item);
+    });
+    acc.push(obj);
+    return acc;
+  }, []);
+  return JSON.stringify(json);
+};

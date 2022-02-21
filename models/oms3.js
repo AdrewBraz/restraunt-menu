@@ -12,7 +12,7 @@ const oms3Schema = new Schema({
   NAME: String,
   NUM_USL: Number,
   NUM_CI: Number,
-  TOTAL_PRICE: String,
+  TOTAL_PRICE: mongoose.Types.Decimal128,
   DATE: Date,
 });
 

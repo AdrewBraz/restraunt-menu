@@ -67,7 +67,7 @@ const storeData = async (data, reply, model, date = '2018-01-01') => {
 const oms2Controller = {
   getDates,
   getData,
-  storeData
-}
+  storeData,
+};
 
 export default oms2Controller;

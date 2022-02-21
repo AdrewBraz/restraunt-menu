@@ -1,37 +1,44 @@
 // @ts-check
 import React from 'react';
 import { useEffect } from 'react';
-import { Jumbotron, Container, Button, Alert } from 'react-bootstrap';
+import {
+  Jumbotron, Container, Button, Alert,
+} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from '../../assets/lg.svg';
 import AddModal from './AddModal';
-import { useDispatch, useSelector } from 'react-redux';
+import ReportModal from './ReportModal';
 import actions from '../actions';
+
+console.log(ReportModal);
 
 const App = () => {
   const dispatch = useDispatch();
-  const { errorText, errorStatus, messageText, messageStatus } = useSelector(({ app }) => app);
-  console.log(messageText)
+  const {
+    errorText, errorStatus, messageText, messageStatus,
+  } = useSelector(({ app }) => app);
+  console.log(messageText);
   const openModal = () => {
-    dispatch(actions.modalStateOpen())
-  }
+    dispatch(actions.modalReportOpen());
+  };
 
   useEffect(() => {
-    if(errorStatus){
+    if (errorStatus) {
       const timer = setTimeout(() => {
-        dispatch(actions.removeError())
+        dispatch(actions.removeError());
       }, 2500);
-      return () => clearTimeout(timer)
+      return () => clearTimeout(timer);
     }
-  }, [errorStatus])
+  }, [errorStatus]);
   useEffect(() => {
-    if(messageStatus){
+    if (messageStatus) {
       const timer = setTimeout(() => {
-        dispatch(actions.removeMessage())
+        dispatch(actions.removeMessage());
       }, 2500);
-      return () => clearTimeout(timer)
+      return () => clearTimeout(timer);
     }
-  }, [messageStatus])
+  }, [messageStatus]);
   return (
     <>
       <Container>
@@ -42,21 +49,20 @@ const App = () => {
           <h1 className="text-center">Отчеты из ПУМП по принятым счетам</h1>
           <Container className="mt-5">
             <div className=" d-flex w-50 m-auto flex-row align-items-center justify-content-between">
-              <Link className="btn btn-info btn-lg" role="button" to="/oms1">ОМС 1</Link>
-              <Link className="btn btn-info btn-lg" role="button" to="/oms2">ОМС 2</Link>
-              <Link className="btn btn-info btn-lg" role="button" to="/oms3">OМС 3</Link>
-              <Button onClick={() => { openModal()}}>Добавить</Button>
+              <Button onClick={() => { openModal(); }}>Получить отчет</Button>
+              <Button onClick={() => { openModal(); }}>Добавить</Button>
             </div>
           </Container>
         </Jumbotron>
       </Container>
       <Container>
-        <AddModal />
-        <Alert variant='danger' show={errorStatus}>{errorText}</Alert>
-        <Alert variant='info' show={messageStatus}>{messageText}</Alert>
+        {/* <AddModal /> */}
+        <ReportModal />
+        <Alert variant="danger" show={errorStatus}>{errorText}</Alert>
+        <Alert variant="info" show={messageStatus}>{messageText}</Alert>
       </Container>
     </>
-  )
-}
+  );
+};
 
 export default App;

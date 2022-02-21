@@ -1,11 +1,13 @@
 // @ts-check
 import { fetchData, selectDepartment } from '../reducers/storeSlice';
-import { modalStateOpen, modalStateClose, addMessage, addError, removeError, removeMessage } from '../reducers/appSlice';
+import {
+  modalReportOpen, modalReportClose, addMessage, addError, removeError, removeMessage,
+} from '../reducers/appSlice';
 
 export default {
   fetchData,
-  modalStateOpen,
-  modalStateClose,
+  modalReportOpen,
+  modalReportClose,
   addMessage,
   addError,
   removeError,

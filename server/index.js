@@ -43,6 +43,6 @@ export default (state = {}) => {
   setUpViews(app);
   setUpStaticAssets(app);
   addRoutes(app);
-  app.register(multer.contentParser)
+  app.register(multer.contentParser);
   return app;
 };

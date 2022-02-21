@@ -3,18 +3,20 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const app = createSlice({
   name: 'app',
-  initialState: {modal: 'close', errorText: '', errorStatus: false, messageText: '', messageStatus: false},
+  initialState: {
+    modal: 'close', errorText: '', errorStatus: false, messageText: '', messageStatus: false,
+  },
   reducers: {
-    modalStateOpen(state) {
+    modalReportOpen(state) {
       state.modal = 'open';
       return state;
     },
-    modalStateClose(state) {
+    modalReportClose(state) {
       state.modal = 'close';
       return state;
     },
     addMessage(state, { payload }) {
-      const { message, status} = payload;
+      const { message, status } = payload;
       state.messageText = message;
       state.messageStatus = status;
       return state;
@@ -25,7 +27,7 @@ const app = createSlice({
       return state;
     },
     addError(state, { payload }) {
-      const { data, status} = payload;
+      const { data, status } = payload;
       state.errorText = data;
       state.errorStatus = status;
       return state;
@@ -34,10 +36,12 @@ const app = createSlice({
       state.errorText = '';
       state.errorStatus = false;
       return state;
-    }
+    },
   },
 });
 
-export const { modalStateOpen, modalStateClose, addMessage, addError, removeError, removeMessage } = app.actions;
+export const {
+  modalReportOpen, modalReportClose, addMessage, addError, removeError, removeMessage,
+} = app.actions;
 
 export default app.reducer;

@@ -16,7 +16,7 @@ const oms2Schema = new Schema({
   NUM_CI: Number,
   TOTAL_PRICE: mongoose.Types.Decimal128,
   DATE: Date,
-  TYPE: String
+  TYPE: String,
 });
 
 export default mongoose.model('OMS2', oms2Schema, 'oms2');

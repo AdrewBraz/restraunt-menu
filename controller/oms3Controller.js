@@ -53,8 +53,6 @@ const storeData = async (data, reply, model, date = '2018-01-01') => {
     }
     item.TOTAL_PRICE = item.TOTAL_PRICE.toString().replace(/\s+/g, '');
     item.PRICE_ONE = item.PRICE_ONE.toString().replace(/\s+/g, '');
-    item.NUM_USL = item.NUM_USL.replace(/\s+/g, '');
-    item.PATIENT_NUM = item.PATIENT_NUM.replace(/\s+/g, '');
     item.ORD_NAME = item.ORD_NAME.toUpperCase();
   });
 
@@ -66,9 +64,9 @@ const storeData = async (data, reply, model, date = '2018-01-01') => {
       COD: el.COD,
       NAME: el.NAME,
       NUM_USL: el.NUM_USL,
-      PRICE_ONE: el.PRICE_ONE.replace(/[,]/g, '.'),
+      PRICE_ONE: el.PRICE_ONE,
       NUM_CI: el.NUM_CI,
-      TOTAL_PRICE: el.TOTAL_PRICE.replace(/[,]/g, '.'),
+      TOTAL_PRICE: el.TOTAL_PRICE,
       DATE: date,
     });
     await newItem.save();
