@@ -71,7 +71,7 @@ const storeData = async (data, reply, model, date = '2018-01-01') => {
     });
     await newItem.save();
   });
-  await reply.send({ message: 'saved' });
+  await reply.send({ message: 'Отчет успешно добавлен в базу', status: true });
 };
 
 const oms3Controller = {

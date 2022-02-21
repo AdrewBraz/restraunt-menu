@@ -16,15 +16,15 @@ const getData = async (req, reply, model) => {
       },
     },
     {
-      $addFields: {
-        SMO_NAME: '$_id.SMO_NAME', PROFILE: '$_id.PROFILE', TOTAL_PRICE: { $toString: '$TOTAL_PRICE' },
-      },
-    },
-    {
-      $project: {
-        _id: 0, COD: '$COD', SMO_NAME: '$SMO_NAME', PROFILE: '$_id.PROFILE', USL: '$USL', MDSTAND: '$MDSTAND', TOTAL_PRICE: '$TOTAL_PRICE',
-      },
-    },
+      $group: {
+        _id: '$_id.SMO_NAME',
+        smoName: {
+          $push: {
+            PROFILE: '$_id.PROFILE', USL: { $sum: '$USL' }, MDSTAND: { $sum: '$MDSTAND' }, TOTAL_PRICE: { $sum: '$TOTAL_PRICE' }
+          }
+        }
+      }
+    }
   ]);
 
   console.log(coll);

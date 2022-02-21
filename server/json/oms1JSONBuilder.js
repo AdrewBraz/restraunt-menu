@@ -21,8 +21,8 @@ const addtoObject = (obj, field, item) => {
   }
 };
 
-export default async (data) => {
-  const keys = data[0];
+export default async (data, report) => {
+  const keys = report === '/oms1' ?  data[0] : [];
   const json = data.slice(1).reduce((acc, row) => {
     const obj = {};
     row.forEach((item, i) => {
