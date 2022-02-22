@@ -6,8 +6,8 @@ const getDates = async (model) => {
   return coll;
 };
 
-const getData = async (req, reply, model) => {
-  const { from, to } = req.body;
+const getData = async (dates, reply, model) => {
+  const { from, to } = dates;
   const coll = await model.aggregate([
     { $match: { DATE: { $gte: new Date(from), $lte: new Date(to) } } },
     {
