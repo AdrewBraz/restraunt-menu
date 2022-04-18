@@ -27,6 +27,5 @@ export default async (path, params = [], sheet) => {
       console.log(err);
     });
   const filteredData = data.filter((item) => !filters.includes(item[0]));
-  console.log(filteredData);
   return filteredData;
 };

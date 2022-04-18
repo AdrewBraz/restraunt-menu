@@ -7,11 +7,11 @@ const app = createSlice({
     modal: 'close', errorText: '', errorStatus: false, messageText: '', messageStatus: false,
   },
   reducers: {
-    modalReportOpen(state) {
-      state.modal = 'open';
+    modalOpen(state, { payload }) {
+      state.modal = payload;
       return state;
     },
-    modalReportClose(state) {
+    modalClose(state) {
       state.modal = 'close';
       return state;
     },
@@ -41,7 +41,7 @@ const app = createSlice({
 });
 
 export const {
-  modalReportOpen, modalReportClose, addMessage, addError, removeError, removeMessage,
+  modalOpen, modalClose, addMessage, addError, removeError, removeMessage,
 } = app.actions;
 
 export default app.reducer;

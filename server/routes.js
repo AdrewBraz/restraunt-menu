@@ -63,6 +63,7 @@ export default (router) => {
         const { path } = _req.file;
         const sheet = report === '/oms3' ? 'ОМС-3' : 'Sheet0';
         const data = await parser(path, parserParams, sheet);
+        console.log(data)
         fs.unlink(_req.file.path, (err) => {
           if (err) throw err;
           console.log(`${path} file was deleted`);
@@ -71,9 +72,13 @@ export default (router) => {
         const result = report === '/oms1' ? await jsonBuilder(data) : jsonBuilder(data, keyList);
         await omsController.storeData(result, reply, omsModel, date);
       })
-    .get('/report', (_req, reply) => {
+    .get('/report', async (_req, reply) => {
       const { from, to, report } = _req.query;
       console.log(from, to, report)
+      const omsController = controller[report];
+      const omsModel = model[report];
+      const { getData } = omsController;
+      await getData({from, to}, reply, omsModel)
     })
   // ['/oms1', '/oms2', '/oms3'].forEach((route) => {
   //   router.post(route, async (_req, reply) => {

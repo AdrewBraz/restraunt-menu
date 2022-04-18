@@ -11,18 +11,16 @@ import AddModal from './AddModal';
 import ReportModal from './ReportModal';
 import actions from '../actions';
 
-console.log(ReportModal);
 
 const App = () => {
   const dispatch = useDispatch();
   const {
-    errorText, errorStatus, messageText, messageStatus,
+    errorText, errorStatus, messageText, messageStatus, modal
   } = useSelector(({ app }) => app);
-  console.log(messageText);
-  const openModal = () => {
-    dispatch(actions.modalReportOpen());
+  const openModal = (msg) => {
+    dispatch(actions.modalOpen(msg));
   };
-
+  console.log(modal)
   useEffect(() => {
     if (errorStatus) {
       const timer = setTimeout(() => {
@@ -49,14 +47,14 @@ const App = () => {
           <h1 className="text-center">Отчеты из ПУМП по принятым счетам</h1>
           <Container className="mt-5">
             <div className=" d-flex w-50 m-auto flex-row align-items-center justify-content-between">
-              <Button onClick={() => { openModal(); }}>Получить отчет</Button>
-              <Button onClick={() => { openModal(); }}>Добавить</Button>
+              <Button onClick={() => { openModal('open report'); }}>Получить отчет</Button>
+              <Button onClick={() => { openModal('open add'); }}>Добавить</Button>
             </div>
           </Container>
         </Jumbotron>
       </Container>
       <Container>
-        {/* <AddModal /> */}
+        <AddModal />
         <ReportModal />
         <Alert variant="danger" show={errorStatus}>{errorText}</Alert>
         <Alert variant="info" show={messageStatus}>{messageText}</Alert>

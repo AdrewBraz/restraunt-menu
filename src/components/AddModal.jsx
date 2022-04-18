@@ -13,7 +13,7 @@ const AddModal = () => {
   const modal = useSelector(({ app }) => app.modal);
   const dispatch = useDispatch();
   const closeModal = () => {
-    dispatch(actions.modalStateClose());
+    dispatch(actions.modalClose());
   };
 
   const generateOnSubmit = () => async (values) => {
@@ -35,7 +35,7 @@ const AddModal = () => {
       const status = true;
       dispatch(actions.addError({ data, status }));
     }
-    dispatch(actions.modalReportClose());
+    dispatch(actions.modalClose());
   };
 
   const form = useFormik({
@@ -45,7 +45,7 @@ const AddModal = () => {
   });
 
   return (
-    <Modal size="lg" show={modal !== 'close'} onHide={closeModal}>
+    <Modal size="lg" show={modal === 'open add'} onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>Добавление отчета в базу данных</Modal.Title>
       </Modal.Header>

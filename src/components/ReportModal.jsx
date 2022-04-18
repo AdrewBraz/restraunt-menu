@@ -25,7 +25,7 @@ const ReportModal = () => {
     dispatch(actions.fetchData(result));
   };
   const closeModal = () => {
-    dispatch(actions.modalReportClose());
+    dispatch(actions.modalClose());
   };
 
   const form = useFormik({
@@ -42,7 +42,7 @@ const ReportModal = () => {
   });
 
   return (
-    <Modal size="lg" show={modal !== 'close'} onHide={closeModal}>
+    <Modal size="lg" show={modal === 'open report'} onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>Получение отчета</Modal.Title>
       </Modal.Header>
