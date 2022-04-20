@@ -27,11 +27,6 @@ const getData = async (dates, reply, model) => {
     },
   ]);
 
-  const coll2 = await model.aggregate([
-    { $match: { DATE: { $gte: new Date(from), $lte: new Date(to) } } },
-    { $group: { _id: { ORD_NAME: '$ORD_NAME' }, PATIENT_NUM: { $sum: '$PATIENT_NUM' } } },
-  ]);
-
   const data = coll1.reduce((acc, department) => {
     console.log(department._id);
     department.codes.forEach((item) => {
@@ -74,10 +69,17 @@ const storeData = async (data, reply, model, date = '2018-01-01') => {
   await reply.send({ message: 'Отчет успешно добавлен в базу', status: true });
 };
 
+const deleteData = async (dates, reply, model) => {
+  const { from, to } = dates;
+  const coll = await model.find({ DATE: { $gte: new Date(from), $lte: new Date(to) } })
+  console.log(coll)
+}
+
 const oms3Controller = {
   getDates,
   getData,
   storeData,
+  deleteData
 };
 
 export default oms3Controller;

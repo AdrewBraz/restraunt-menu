@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Icon from '../../assets/lg.svg';
 import AddModal from './AddModal';
 import ReportModal from './ReportModal';
+import DeleteModal from './DeleteModal';
 import actions from '../actions';
 
 
@@ -49,6 +50,7 @@ const App = () => {
             <div className=" d-flex w-50 m-auto flex-row align-items-center justify-content-between">
               <Button onClick={() => { openModal('open report'); }}>Получить отчет</Button>
               <Button onClick={() => { openModal('open add'); }}>Добавить</Button>
+              <Button onClick={() => { openModal('open delete'); }}>Удалить</Button>
             </div>
           </Container>
         </Jumbotron>
@@ -56,6 +58,7 @@ const App = () => {
       <Container>
         <AddModal />
         <ReportModal />
+        <DeleteModal />
         <Alert variant="danger" show={errorStatus}>{errorText}</Alert>
         <Alert variant="info" show={messageStatus}>{messageText}</Alert>
       </Container>

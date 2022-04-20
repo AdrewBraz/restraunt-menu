@@ -46,9 +46,19 @@ export default (router) => {
     .get('/*', (_req, reply) => {
       reply.redirect('/');
     })
+    .post('/delete_data',
+    { preHandler: upload.single('excel') },
+     async (_req, reply) => {
+      const { dates, report } = _req.body;
+      const omsController = controller[report];
+      const omsModel = model[report];
+      console.log(dates, report, omsModel)
+      await omsController.deleteData(dates, reply, omsModel)
+    })
     .post('/parse',
       { preHandler: upload.single('excel') },
       async (_req, reply) => {
+        console.log(_req.body)
         const { date, report } = _req.body;
         const omsController = controller[report];
         const omsModel = model[report];
@@ -77,7 +87,7 @@ export default (router) => {
       console.log(from, to, report)
       const omsController = controller[report];
       const omsModel = model[report];
-      const { getData } = omsController;
+      const { getData, deleteData } = omsController;
       await getData({from, to}, reply, omsModel)
     })
   // ['/oms1', '/oms2', '/oms3'].forEach((route) => {
