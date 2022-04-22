@@ -87,7 +87,7 @@ const ReportModal = () => {
               </select>
             </div>
             <div className="input-group-prepend mb-5 col-md-4">
-              <button disabled={!form.isValid || form.isSubmitting} type="submit" className=" btn btn-primary btn-sm">
+              <button disabled={!form.isValid || form.isSubmitting} type="submit" className="btn btn-primary btn-sm">
                 {form.isSubmitting ? <Spinner animation="border" /> : 'Запрос'}
               </button>
             </div>

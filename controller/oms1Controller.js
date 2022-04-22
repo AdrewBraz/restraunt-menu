@@ -37,11 +37,7 @@ const storeData = async (data, reply, model, date = '2018-01-01') => {
   const Schema = model;
   JSON.parse(data).forEach(async (el) => {
     const newItem = new Schema({
-      SMO_NAME: el.SMO_NAME,
-      PROFILE: el.PROFILE,
-      MDSTAND: el.MDSTAND,
-      USL: el.USL,
-      TOTAL_PRICE: el.TOTAL_PRICE,
+      ...el,
       DATE: date,
     });
     await newItem.save();

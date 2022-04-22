@@ -53,15 +53,7 @@ const storeData = async (data, reply, model, date = '2018-01-01') => {
 
   jsonData.forEach(async (el) => {
     const newItem = new model({
-      ID: el.ID,
-      ORD_NAME: el.ORD_NAME,
-      PATIENT_NUM: el.PATIENT_NUM,
-      COD: el.COD,
-      NAME: el.NAME,
-      NUM_USL: el.NUM_USL,
-      PRICE_ONE: el.PRICE_ONE,
-      NUM_CI: el.NUM_CI,
-      TOTAL_PRICE: el.TOTAL_PRICE,
+      ...el,
       DATE: date,
     });
     await newItem.save();
@@ -70,9 +62,10 @@ const storeData = async (data, reply, model, date = '2018-01-01') => {
 };
 
 const deleteData = async (dates, reply, model) => {
+  console.log(dates)
   const { from, to } = dates;
-  const coll = await model.find({ DATE: { $gte: new Date(from), $lte: new Date(to) } })
-  console.log(coll)
+  await model.find({ DATE: { $gte: new Date(from), $lte: new Date(to) } }).deleteMany().exec()
+  await reply.send({ message: 'Документы удалены', status: true });
 }
 
 const oms3Controller = {

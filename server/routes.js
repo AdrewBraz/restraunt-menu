@@ -49,10 +49,13 @@ export default (router) => {
     .post('/delete_data',
     { preHandler: upload.single('excel') },
      async (_req, reply) => {
-      const { dates, report } = _req.body;
+      const { dateFrom, dateTo, report } = _req.body;
+      const dates = {
+        from: dateFrom,
+        to: dateTo
+      }
       const omsController = controller[report];
       const omsModel = model[report];
-      console.log(dates, report, omsModel)
       await omsController.deleteData(dates, reply, omsModel)
     })
     .post('/parse',

@@ -45,24 +45,21 @@ const storeData = async (data, reply, model, date = '2018-01-01') => {
 
   jsonData.forEach(async (el) => {
     const newItem = new model({
-      COD: el.COD,
-      NAME: el.NAME,
-      PRICE: el.PRICE,
-      PRICE_D: el.PRICE_D,
-      USL: el.USL,
-      DAYS: el.DAYS,
-      NUM_DV: el.NUM_DV,
-      NUM_DOC: el.NUM_DOC,
-      NUM_CI: el.NUM_CI,
-      TOTAL_PRICE: el.TOTAL_PRICE,
+      ...el
       DATE: date,
-      TYPE: el.TYPE,
     });
     await newItem.save();
   });
 
   await reply.send({ message: 'Отчет успешно добавлен в базу', status: true });
 };
+
+const deleteData = async (dates, reply, model) => {
+  console.log(dates)
+  const { from, to } = dates;
+  await model.find({ DATE: { $gte: new Date(from), $lte: new Date(to) } }).deleteMany().exec()
+  await reply.send({ message: 'Документы удалены', status: true });
+}
 
 const oms2Controller = {
   getDates,
