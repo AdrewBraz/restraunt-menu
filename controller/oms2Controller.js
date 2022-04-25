@@ -45,7 +45,7 @@ const storeData = async (data, reply, model, date = '2018-01-01') => {
 
   jsonData.forEach(async (el) => {
     const newItem = new model({
-      ...el
+      ...el,
       DATE: date,
     });
     await newItem.save();
@@ -54,17 +54,21 @@ const storeData = async (data, reply, model, date = '2018-01-01') => {
   await reply.send({ message: 'Отчет успешно добавлен в базу', status: true });
 };
 
-const deleteData = async (dates, reply, model) => {
-  console.log(dates)
-  const { from, to } = dates;
-  await model.find({ DATE: { $gte: new Date(from), $lte: new Date(to) } }).deleteMany().exec()
-  await reply.send({ message: 'Документы удалены', status: true });
+const parser = (data) => {
+  const result = JSON.parse(data).map((item) => {
+    item.COD = parseInt(item.COD.replace(/^0*/, ''));
+    item.PRICE = item.PRICE.toString().replace(/\s+/g, '');
+    item.PRICE_D = item.PRICE_D.toString().replace(/\s+/g, '');
+    item.TOTAL_PRICE = item.TOTAL_PRICE.toString().replace(/\s+/g, '');
+    item.TYPE = item.COD < 60000 ? 'AMB' : 'STAC';
+    return item
+  });
+  return result
 }
 
 const oms2Controller = {
-  getDates,
   getData,
-  storeData,
+  parser
 };
 
 export default oms2Controller;

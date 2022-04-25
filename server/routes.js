@@ -3,6 +3,9 @@ import fs from 'fs';
 import multer from 'fastify-multer';
 import path from 'path';
 import controller from '../controller';
+import getDates from '../controller/datesController';
+import deleteData from '../controller/deleteController';
+import storeData from '../controller/storeController';
 import model from '../models';
 import parser from './excel/parser';
 import json from './json';
@@ -56,17 +59,16 @@ export default (router) => {
       }
       const omsController = controller[report];
       const omsModel = model[report];
-      await omsController.deleteData(dates, reply, omsModel)
+      await deleteData(dates, reply, omsModel)
     })
     .post('/parse',
       { preHandler: upload.single('excel') },
       async (_req, reply) => {
-        console.log(_req.body)
         const { date, report } = _req.body;
         const omsController = controller[report];
         const omsModel = model[report];
         const jsonBuilder = json(report);
-        const registeredDates = (await omsController.getDates(omsModel)).map((item) => item.getTime());
+        const registeredDates = (await getDates(omsModel)).map((item) => item.getTime());
         if (registeredDates.includes(new Date(date).getTime())) {
           reply.code(500);
           reply.send('Отчет за этот период времени уже внесен в базу');
@@ -76,21 +78,21 @@ export default (router) => {
         const { path } = _req.file;
         const sheet = report === '/oms3' ? 'ОМС-3' : 'Sheet0';
         const data = await parser(path, parserParams, sheet);
-        console.log(data)
         fs.unlink(_req.file.path, (err) => {
           if (err) throw err;
           console.log(`${path} file was deleted`);
         });
         const keyList = keys[report];
         const result = report === '/oms1' ? await jsonBuilder(data) : jsonBuilder(data, keyList);
-        await omsController.storeData(result, reply, omsModel, date);
+        console.log('this data', result)
+        await storeData(result, reply, omsModel, omsController.parser, date);
       })
     .get('/report', async (_req, reply) => {
       const { from, to, report } = _req.query;
       console.log(from, to, report)
       const omsController = controller[report];
       const omsModel = model[report];
-      const { getData, deleteData } = omsController;
+      const { getData } = omsController;
       await getData({from, to}, reply, omsModel)
     })
   // ['/oms1', '/oms2', '/oms3'].forEach((route) => {

@@ -1,4 +1,6 @@
-export default async (model, date) => {
-  const { from, to } = date;
-  model.find({ DATE: { $gte: ISODate('2018-01-01'), $lte: ISODate('2018-02-01') } });
-};
+// @ts-check
+export default async (dates, reply, model) => {
+  const { from, to } = dates;
+  await model.find({ DATE: { $gte: new Date(from), $lte: new Date(to) } }).deleteMany().exec()
+  await reply.send({ message: 'Документы удалены', status: true });
+}
