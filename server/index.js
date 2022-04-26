@@ -7,7 +7,7 @@ import fastifyStatic from 'fastify-static';
 import mongoose from 'mongoose';
 import multer from 'fastify-multer';
 import addRoutes from './routes.js';
-
+import authRoutes from './authRoutes.js';
 const isProduction = process.env.NODE_ENV === 'production';
 const appPath = path.join(__dirname, '..');
 const isDevelopment = !isProduction;
@@ -43,6 +43,7 @@ export default (state = {}) => {
   setUpViews(app);
   setUpStaticAssets(app);
   addRoutes(app);
+  authRoutes(app);
   app.register(multer.contentParser);
   return app;
 };

@@ -10,6 +10,7 @@ import Icon from '../../assets/lg.svg';
 import AddModal from './AddModal';
 import ReportModal from './ReportModal';
 import DeleteModal from './DeleteModal';
+import RegistrationModal from './RegistrationModal'
 import actions from '../actions';
 
 
@@ -51,6 +52,7 @@ const App = () => {
               <Button onClick={() => { openModal('open report'); }}>Получить отчет</Button>
               <Button onClick={() => { openModal('open add'); }}>Добавить</Button>
               <Button onClick={() => { openModal('open delete'); }}>Удалить</Button>
+              <Button onClick={() => { openModal('open registration'); }}>Войти</Button>
             </div>
           </Container>
         </Jumbotron>
@@ -59,6 +61,7 @@ const App = () => {
         <AddModal />
         <ReportModal />
         <DeleteModal />
+        <RegistrationModal />
         <Alert variant="danger" show={errorStatus}>{errorText}</Alert>
         <Alert variant="info" show={messageStatus}>{messageText}</Alert>
       </Container>
