@@ -39,7 +39,16 @@ const setUpStaticAssets = (app) => {
 
 export default (state = {}) => {
   const app = fastify();
-
+  app.addContentTypeParser('application/json', { parseAs: 'string' },(req, body, done) => {
+    console.log('sdfsdf')
+    try {
+      var json = JSON.parse(body)
+      done(null, json)
+    } catch (err) {
+      err.statusCode = 400
+      done(err, undefined)
+    }
+  })
   setUpViews(app);
   setUpStaticAssets(app);
   addRoutes(app);

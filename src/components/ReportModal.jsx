@@ -47,7 +47,7 @@ const ReportModal = () => {
         <Modal.Title>Получение отчета</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form action="/" id="dates" className="form-inline mb-3" method="post" onSubmit={form.handleSubmit}>
+        <form action="/" id="dates" encType="multipart/form-data" className="form-inline mb-3" method="post" onSubmit={form.handleSubmit}>
           <div className="form-group align-items-end justify-content-around flex-row w-100">
             <div className="form-group mb-5 col-md-3">
               <label htmlFor="yearFrom">Начало периода</label>

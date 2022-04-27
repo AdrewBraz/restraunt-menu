@@ -1,23 +1,61 @@
 import User from "../models/users";
 import Roles from '../models/roles'
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken';
 
-const registration = async (_req, reply) => {
+const generateAccessToken = (id, roles) => {
+  const payload = { id, roles }
+  return jwt.sign(payload, secret, { expiresIn: '12h'})
+}
+
+const registration = async (body, reply) => {
+  const {name, password} = body
+  let message;
+  let status;
     try{
-        const candidate = await User.findOne({userName})
+        const candidate = await User.findOne({name})
         if(candidate){
-            throw new Error(`User already exist`)
+            throw new Error('Пользователь с таким именем уже существует')
         }
         const hashPassword = bcrypt.hashSync(password, 6);
-        const userRole = Roles.findOne({ value: 'USER'})
-        const user = new User({ name: userName, password: hashPassword, roles: [userRole.value]})
+        const userRole = Roles.findOne({ type: 'USER'})
+        console.log(userRole)
+        const user = new User({ name: name, password: hashPassword, roles: [userRole.value]})
         await user.save()
-        reply.send({ message: 'Пользователь успешно зарегистирован', status: true })
+        message = 'Пользователь успешно зарегистирован'
+        status = true
     }
     catch(e) {
-      console.log(e)
-      reply.send({ message: e, status: true })
+     message = e.message;
+     status = false
+    } finally{
+      console.log(message, status)
+      await reply.send({message, status})
     }
+}
+
+const login = async (body, reply) => {
+  let message;
+  let status;
+  const { name, password } = body;
+  try{
+    const user = await User.findOne({name});
+    if(!user){
+      throw new Error(`Такого пользователя не существует`)
+    }
+    const validateUser = bcrypt.compareSync(password, user.password)
+    if(!validateUser){
+      throw new Error(`Введен неверный пароль`)
+    }
+    const token = generateAccessToken(user._id, user.roles)
+    message = `Приветствую ${user.name}`
+    status = true
+  } catch(e) {
+    message = e.message;
+    status = false;
+  } finally {
+    await reply.send({message, status, token})
   }
+}
 
 export { registration }

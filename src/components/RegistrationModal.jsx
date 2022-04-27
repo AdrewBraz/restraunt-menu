@@ -3,26 +3,26 @@ import { Modal, Spinner } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { format } from 'date-fns';
-import { useLocation } from 'react-router-dom';
 import actions from '../actions';
-import { listOfMonths, listOfYears, formatter } from '../../helpers';
-import validationSchema from '../validationSchema';
+import registrationSchema from '../registrationSchema';
 
 const RegistrationModal = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const modal = useSelector(({ app }) => app.modal);
   const generateOnSubmit = () => async (values) => {
-    const dates = {
-      from: `${values.fromYear}-${values.fromMonth}`,
-      to: `${values.toYear}-${values.toMonth}`,
+    const { name, password } = values
+    try {
+      await axios.post('/registration', {name, password}).then(({ data }) => {
+        console.log(data);
+        dispatch(actions.addMessage(data));
+        console.log('success');
+      });
+    } catch (e) {
+      const { data } = e.response;
+      const status = true;
+      dispatch(actions.addError({ data, status }));
     };
-    const { report } = values
-    const result = await axios.get(`/report?from=${dates.from}&to=${dates.to}&report=${report}`)
-      .then(({ data }) => data)
-      .catch(() => new Error('new error'));
-    dispatch(actions.fetchData(result));
+    dispatch(actions.modalClose());
   };
   const closeModal = () => {
     dispatch(actions.modalClose());
@@ -31,15 +31,14 @@ const RegistrationModal = () => {
   const form = useFormik({
     onSubmit: generateOnSubmit(),
     initialValues: {
-      fromMonth: '',
-      fromYear: '',
-      toMonth: '',
-      toYear: '',
+      name: '',
+      password: '',
     },
-    initialErrors: { fromMonth: 'is empty' },
-    validationSchema,
+    initialErrors: { name: '' },
+    validationSchema: registrationSchema,
     validateOnChange: true,
   });
+
 
   return (
     <Modal size="lg" show={modal === 'open registration'} onHide={closeModal}>
@@ -47,14 +46,16 @@ const RegistrationModal = () => {
         <Modal.Title>Получение отчета</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form action="/" id="dates" className="form-inline mb-3" method="post" onSubmit={form.handleSubmit}>
+        <form action="/registration" id="dates" encType="application/json" className="form-inline mb-3" method="post"  onSubmit={form.handleSubmit}>
           <div className="form-group align-items-end justify-content-around flex-row w-100">
-          <div class="form-group mb-5 col-md-3">
-            <input type="text" class="form-control" placeholder="Username" aria-label="Username" />
+          <div className="form-group mb-5 col-md-3">
+            <input type="text" className="form-control" placeholder="Username" name="name" onChange={form.handleChange} value={form.values.name} aria-label="username" />
+            {form.errors.name ? <span>{form.errors.name}</span> : null }
           </div>
-          <div class="form-group mb-5 col-md-3">
-            <input type="password" class="form-control" placeholder="Password" aria-label="Password"/> 
-        <div className="input-group-prepend mb-5 col-md-4">
+          <div className="form-group mb-5 col-md-3">
+            <input type="password" className="form-control" placeholder="Password" onChange={form.handleChange} value={form.values.password} name="password" aria-label="Password"/> 
+            {form.errors.password ? <span>{form.errors.password}</span> : null }
+            <div className="input-group-prepend mb-5 col-md-4">
               <button disabled={!form.isValid || form.isSubmitting} type="submit" className="btn btn-primary btn-sm">
                 {form.isSubmitting ? <Spinner animation="border" /> : 'Запрос'}
               </button>

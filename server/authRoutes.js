@@ -1,10 +1,13 @@
 import fastifyAuth from "fastify-auth";
 import { registration } from '../controller/authController';
 
-export default async(fastify) => {
-  return fastify.register(fastifyAuth)
+export default (fastify) => {
+  fastify.register(fastifyAuth)
     .after(() => {
-      fastify.post('/register', registration(_req, reply))
+      fastify.post('/registration', async (_req, reply) => {
+        await registration(_req.body, reply)
+      })
     })
+  return fastify
 
 }

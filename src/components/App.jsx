@@ -1,9 +1,7 @@
 // @ts-check
 import React from 'react';
 import { useEffect } from 'react';
-import {
-  Jumbotron, Container, Button, Alert,
-} from 'react-bootstrap';
+import { Container, Button, Alert} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from '../../assets/lg.svg';
@@ -42,7 +40,7 @@ const App = () => {
   return (
     <>
       <Container>
-        <Jumbotron className="bg-white d-flex align-items-center flex-column p-2">
+        <div className="jumbotron bg-white d-flex align-items-center flex-column p-2">
           <Link to="/">
             <Icon style={{ width: '100px', height: '100px' }} />
           </Link>
@@ -55,7 +53,7 @@ const App = () => {
               <Button onClick={() => { openModal('open registration'); }}>Войти</Button>
             </div>
           </Container>
-        </Jumbotron>
+        </div>
       </Container>
       <Container>
         <AddModal />

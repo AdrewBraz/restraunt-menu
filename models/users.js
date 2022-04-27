@@ -1,8 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 
 mongoose.set('debug', true);
-const { Schema } = mongoose;
-
 
 const User = new Schema({
     name: { type: String, required: true},
