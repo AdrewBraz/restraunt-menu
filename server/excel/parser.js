@@ -2,7 +2,7 @@
 
 import Excel from 'exceljs';
 
-export default async (path, params = [], sheet) => {
+export default async (path, params = [], sheet, report) => {
   const workbook = new Excel.Workbook();
   const [start, end] = params;
   const filters = [start, end, 'Итого', ' ', null, undefined];

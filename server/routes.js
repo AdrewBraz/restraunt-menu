@@ -57,7 +57,6 @@ export default (router) => {
         from: dateFrom,
         to: dateTo
       }
-      const omsController = controller[report];
       const omsModel = model[report];
       await deleteData(dates, reply, omsModel)
     })
@@ -67,24 +66,22 @@ export default (router) => {
         const { date, report } = _req.body;
         const omsController = controller[report];
         const omsModel = model[report];
-        const jsonBuilder = json(report);
+        const jsonBuilder = json();
         const registeredDates = (await getDates(omsModel)).map((item) => item.getTime());
         if (registeredDates.includes(new Date(date).getTime())) {
-          reply.code(500);
-          reply.send('Отчет за этот период времени уже внесен в базу');
+          reply.code(500).send('Отчет за этот период времени уже внесен в базу');
           return reply;
         }
         const parserParams = params[report];
         const { path } = _req.file;
         const sheet = report === '/oms3' ? 'ОМС-3' : 'Sheet0';
-        const data = await parser(path, parserParams, sheet);
+        const data = await parser(path, parserParams, sheet, report);
         fs.unlink(_req.file.path, (err) => {
           if (err) throw err;
           console.log(`${path} file was deleted`);
         });
         const keyList = keys[report];
-        const result = report === '/oms1' ? await jsonBuilder(data) : jsonBuilder(data, keyList);
-        console.log('this data', result)
+        const result = jsonBuilder(data, report, keyList);
         await storeData(result, reply, omsModel, omsController.parser, date);
       })
     .get('/report', async (_req, reply) => {
