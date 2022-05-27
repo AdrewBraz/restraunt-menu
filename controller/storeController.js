@@ -1,6 +1,7 @@
 // @ts-check
-export default async (data, reply, model, func, date = '2018-01-01') => {
-    const finalData = func ? func(data) : JSON.parse(data)
+export default async (data, reply, model, date = '2018-01-01', func) => {
+  const finalData = func ? func(data) : JSON.parse(data)
+  console.log(finalData)
     finalData.forEach(async (el) => {
         console.log(el)
       const newItem = new model({

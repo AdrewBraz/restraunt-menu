@@ -19,7 +19,7 @@ const ReportModal = () => {
       to: `${values.toYear}-${values.toMonth}`,
     };
     const { report } = values
-    const result = await axios.get(`/report?from=${dates.from}&to=${dates.to}&report=${report}`)
+    const result = await axios.get(`/report?from=${dates.from}&to=${dates.to}&report=/${report}`)
       .then(({ data }) => data)
       .catch(() => new Error('new error'));
     dispatch(actions.fetchData(result));

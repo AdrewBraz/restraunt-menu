@@ -32,30 +32,12 @@ const getData = async (dates, reply, model) => {
   reply.send(coll);
 };
 
-const storeData = async (data, reply, model, date = '2018-01-01') => {
-  const jsonData = JSON.parse(data);
-
-  jsonData.forEach((item) => {
-    item.COD = parseInt(item.COD.replace(/^0*/, ''));
-    item.PRICE = item.PRICE.toString().replace(/\s+/g, '');
-    item.PRICE_D = item.PRICE_D.toString().replace(/\s+/g, '');
-    item.TOTAL_PRICE = item.TOTAL_PRICE.toString().replace(/\s+/g, '');
-    item.TYPE = item.COD < 60000 ? 'AMB' : 'STAC';
-  });
-
-  jsonData.forEach(async (el) => {
-    const newItem = new model({
-      ...el,
-      DATE: date,
-    });
-    await newItem.save();
-  });
-
-  await reply.send({ message: 'Отчет успешно добавлен в базу', status: true });
-};
-
 const parser = (data) => {
+  console.log(typeof data)
+  console.log(data)
+  try{console.log(JSON.parse(data))}catch(err){console.log(err)}
   const result = JSON.parse(data).map((item) => {
+    console.log(item)
     item.COD = parseInt(item.COD.replace(/^0*/, ''));
     item.PRICE = item.PRICE.toString().replace(/\s+/g, '');
     item.PRICE_D = item.PRICE_D.toString().replace(/\s+/g, '');
@@ -63,6 +45,7 @@ const parser = (data) => {
     item.TYPE = item.COD < 60000 ? 'AMB' : 'STAC';
     return item
   });
+  console.log(result)
   return result
 }
 

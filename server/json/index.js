@@ -25,13 +25,11 @@ export default async (data, report, reportKeys) => {
   const keys = report === '/oms1' ?  data[0] : reportKeys;
   const dataByReport = report === '/oms1' ? data.slice(1) : data
   const json = dataByReport.reduce((acc, row) => {
-    console.log(report)
     const obj = {};
     row.forEach((item, i) => {
       if(report === '/oms1'){
         addtoObject(obj, keys[i], item)
       } else {
-      console.log('MAKE ITEM')
       obj[keys[i]] = item
       }
     });

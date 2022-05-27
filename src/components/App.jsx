@@ -5,6 +5,9 @@ import { Container, Button, Alert} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from '../../assets/lg.svg';
+import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Table from './Table';
 import AddModal from './AddModal';
 import ReportModal from './ReportModal';
 import DeleteModal from './DeleteModal';
@@ -17,6 +20,7 @@ const App = () => {
   const {
     errorText, errorStatus, messageText, messageStatus, modal
   } = useSelector(({ app }) => app);
+  const data = useSelector(({ store }) => store.data);
   const openModal = (msg) => {
     dispatch(actions.modalOpen(msg));
   };
@@ -54,6 +58,17 @@ const App = () => {
             </div>
           </Container>
         </div>
+      </Container>
+      <Container>
+      { data.length === 0 ? null
+        : (<Table data={data} />)}
+        { data.length <= 0 ? null : (
+            <div className="col-md-2">
+              <a download href="/download" className="btn btn-success" role="button">
+                <FontAwesomeIcon icon={faFileExcel} />
+              </a>
+            </div>
+          )}
       </Container>
       <Container>
         <AddModal />
