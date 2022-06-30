@@ -8,9 +8,11 @@ import { format } from 'date-fns';
 import { useLocation } from 'react-router-dom';
 import actions from '../actions';
 import { listOfMonths, listOfYears, formatter } from '../../helpers';
+import fileSchema from '../fileSchema';
 
 const AddModal = () => {
   const modal = useSelector(({ app }) => app.modal);
+  const files = [];
   const dispatch = useDispatch();
   const closeModal = () => {
     dispatch(actions.modalClose());
@@ -42,8 +44,8 @@ const AddModal = () => {
     onSubmit: generateOnSubmit(),
     initialValues: {},
     validateOnBlur: false,
+    validationSchema: fileSchema
   });
-
   return (
     <Modal size="lg" show={modal === 'open add'} onHide={closeModal}>
       <Modal.Header closeButton>
@@ -51,10 +53,13 @@ const AddModal = () => {
       </Modal.Header>
       <Modal.Body>
         <form action="/parse" encType="multipart/form-data" method="post" className="form-inline mb-3" onSubmit={form.handleSubmit}>
-          <div className="input-group d-flex justify-content-between custom-file flex-row w-100">
-            <input type="file" id="customFile" name="excel" placeholder="file" onChange={({ currentTarget }) => { form.setFieldValue('excel', currentTarget.files[0]); }} className="custom-file-input col-10" />
-            <label className="custom-file-label col-10" htmlFor="customFile">Choose file</label>
+          <div className="input-group d-flex justify-content-between custom-file flex-row w-100" onChange={() => {console.log(form)}}>
+            <input type="file" className="form-control" id="formFileMultiple" multiple name="excel" placeholder="file" onChange={({ currentTarget }) => { form.setFieldValue('excel', currentTarget.files[0]); }}/>
+            <label className="form-label" htmlFor="formFileMultiple">Choose file</label>
             <button type="submit" disabled={form.isValidating || form.isSubmitting} className=" btn btn-primary btn-sm">
+              {form.isSubmitting ? <Spinner animation="border" /> : 'Отправить файл'}
+            </button>
+            <button type="button" disabled={form.isValidating || form.isSubmitting} className=" btn btn-primary btn-sm">
               {form.isSubmitting ? <Spinner animation="border" /> : 'Добавить файл'}
             </button>
           </div>
